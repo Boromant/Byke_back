@@ -13,12 +13,21 @@ import java.util.List;
 
 @Repository
 public interface EntityEtapeRepository extends JpaRepository<EntityEtape, Integer> {
+
+    @Query("Select E.id_etape, E.num_etape, E.num_sortie, S.date_sortie, S.lieu_depart,"
+            + " E.nom_etape, E.latitude, E.longitude"
+            + " from EntityEtape E, EntitySortie S"
+            + " where E.num_sortie = S.num_sortie"
+            + " and E.num_sortie = :num_sortie"
+            + " and E.num_etape = :num_etape")
+    EntityEtape listerEtape(@Param("num_sortie") int id, @Param("num_etape") int ide);
+
     @Query("Select E.id_etape, E.num_etape, E.num_sortie, S.date_sortie, S.lieu_depart,"
             + " E.nom_etape, E.latitude, E.longitude"
             + " from EntityEtape E, EntitySortie S"
             + " where E.num_sortie = S.num_sortie"
             + " and E.num_sortie = :num_sortie")
-    public List<EntityEtape> listerEtapesSortie(@Param("num_sortie") int id);
+    List<EntityEtape> listerEtapes(@Param("num_sortie") int id);
 
     @Modifying
     @Transactional
@@ -28,7 +37,7 @@ public interface EntityEtapeRepository extends JpaRepository<EntityEtape, Intege
             "latitude= :latitude ," +
             "longitude= :longitude " +
             " WHERE id_etape = :id_etape")
-    public int updateEtape(@Param("id_etape") int id,
+    int updateEtape(@Param("id_etape") int id,
                             @Param("num_etape") int num_etape,
                             @Param("num_sortie") int num_sortie,
                             @Param("nom_etape") String nom_etape,
