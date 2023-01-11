@@ -1,7 +1,9 @@
 package com.group.byke.controller;
 
 import com.group.byke.domains.EntityUsers;
+import com.group.byke.domains.RegisterRequest;
 import com.group.byke.dto.UtilReponse;
+import com.group.byke.outils.GenerateurMotPasse;
 import com.group.byke.repositories.EntityUsersRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -31,36 +33,26 @@ public class JwtAuthenticationController {
     @Autowired
     private JwtUserDetailsService userDetailsService;
 
-    private EntityUsersRepository unUtilisateurRepostory;
+    private EntityUsersRepository unUtilisateurRepository;
 
-    // on initialise
     @Autowired
     public JwtAuthenticationController(EntityUsersRepository UtilisateurRepostory) {
-        this.unUtilisateurRepostory = UtilisateurRepostory;
+        this.unUtilisateurRepository = UtilisateurRepostory;
     }
-    // auhentification  qui va généré un jeton
+
     @RequestMapping(value = "/login", method = RequestMethod.POST)
     public ResponseEntity<?> createAuthenticationToken(@RequestBody EntityUsers unUti)
             throws Exception {
         try {
-            // On contrôle l'utilisateur
             UserDetails userDetails= appelAuthentication(unUti.getNomUtil(), unUti.getMotPasse());
-            // on récupère les informations
-            // nouvel accès à la base de données
-            //final UserDetails userDetails = userDetailsService.loadUserByUsername(unUti.getNomUtil());
-            // On génère le jeton
+            unUti.setNumUtil(unUtilisateurRepository.getIdByNomUtil(unUti.getNomUtil()));
             final String token = jwtTokenUtil.generateToken(userDetails);
-            // on retourne le nom utilisateur et le jeton dans un flux tokon
-            UtilReponse unUtilRe = new UtilReponse(unUti.getNomUtil(),token );
+            UtilReponse unUtilRe = new UtilReponse(unUti.getNumUtil(), unUti.getNomUtil(), token );
             return ResponseEntity.ok(unUtilRe);
         } catch (Exception e) {
             return ResponseEntity.notFound().build();
         }
     }
-
-    // Demande d'authentification à l'aide de l'objet instancié précédemment
-    // La méthode authenticate() appellera la méthode loadUserByUsername() de la classe UserDetailsServiceImpl
-    // L'objet autentication contiendra l'objet userDetails dans la propriété principal
     private UserDetails appelAuthentication(String username, String password) throws Exception {
 
         try {
@@ -72,6 +64,24 @@ public class JwtAuthenticationController {
             throw new Exception("USER_DISABLED", e);
         } catch (BadCredentialsException e) {
             throw new Exception("INVALID_CREDENTIALS", e);
+        }
+    }
+
+    @RequestMapping(value = "/register", method = RequestMethod.POST)
+    public ResponseEntity<?> registerUser(@RequestBody RegisterRequest unReg){
+        if(unUtilisateurRepository.rechercheNom(unReg.getNomUtil()) != null){
+            return ResponseEntity.badRequest().body("Nom d'utilisateur déjà utilisé");
+        }
+        try {
+            EntityUsers unUtil = new EntityUsers();
+            unUtil.setNumUtil(unUtilisateurRepository.getLastNumUtil()+1);
+            unUtil.setNomUtil(unReg.getNomUtil());
+            unUtil.setMotPasse(GenerateurMotPasse.encode(unReg.getMotPasse()));
+            unUtil.setRole(unReg.getRole());
+            unUtilisateurRepository.save(unUtil);
+            return ResponseEntity.ok("Utilisateur enregistré");
+        }catch (Exception e){
+            return ResponseEntity.notFound().build();
         }
     }
 

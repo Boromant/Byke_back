@@ -12,6 +12,7 @@ public class EntityUsers {
     private String motPasse;
     private String role;
 
+
     @Id
     @Column(name = "numutil", nullable = false)
     public Integer getNumUtil() {
