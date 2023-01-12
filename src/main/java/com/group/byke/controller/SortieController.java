@@ -31,10 +31,10 @@ public class SortieController {
     }
 
     @GetMapping("/getSorties")
-    public List<EntitySortie> getSorties() {
+    public List<EntitySortie> getSorties(@RequestParam("id") int num_util) {
         List<EntitySortie> mesSorties = null;
         try {
-            mesSorties = unSortieService.listerSorties();
+            mesSorties = unSortieService.listerSorties(num_util);
 
         }
         catch (Exception e) {
@@ -85,6 +85,9 @@ public class SortieController {
         return maDate;
 
     }
+
+    // 
+    
 
     // MODIFICATION
     @PostMapping(path ="/modification",  consumes = "application/json")

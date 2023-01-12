@@ -10,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.Date;
 import java.sql.Time;
+import java.util.List;
 
 @Repository
 public interface EntitySortieRepository extends JpaRepository<EntitySortie, Integer> {
@@ -29,5 +30,8 @@ public interface EntitySortieRepository extends JpaRepository<EntitySortie, Inte
                             @Param("heure_arrivee") Time heure_arrivee,
                             @Param("lieu_depart") String lieu_depart,
                             @Param("distance_parcourue") float distance_parcourue);
+
+        @Query("SELECT s FROM EntitySortie s WHERE s.num_sortie = :num_sortie")
+        List<EntitySortie> getSortie(@Param("num_sortie") int num_sortie);
 
 }

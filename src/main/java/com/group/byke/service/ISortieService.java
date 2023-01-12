@@ -10,7 +10,7 @@ import java.util.List;
 public interface ISortieService {
 
     EntitySortie listerSortie(@RequestParam("id") int num_sortie);
-    List<EntitySortie> listerSorties();
+    List<EntitySortie> listerSorties(@RequestParam("id") int num_util);
     String getDureeSortie(@RequestParam("id") int num_sortie);
     float getDistanceSortie(@RequestParam("id") int num_sortie);
     String getDateSortie(@RequestParam("id") int num_sortie);

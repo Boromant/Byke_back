@@ -33,9 +33,9 @@ public class SortieService implements ISortieService {
         return null;
     }
     @Override
-    public List<EntitySortie> listerSorties() {
+    public List<EntitySortie> listerSorties(@RequestParam("id") int num_util) {
         try {
-            return unSortieRepository.findAll();
+            return unSortieRepository.getSortie(num_util);
         } catch (Exception e) {
             ResponseEntity.notFound().build();
         }
