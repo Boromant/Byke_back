@@ -86,7 +86,17 @@ public class SortieController {
 
     }
 
-    // 
+    // CREATION
+    @PostMapping(path ="/creation", consumes = "application/json")
+    public ResponseEntity<?> createSortie(@RequestBody EntitySortie unS) {
+        try {
+            unSortieService.createSortie(unS);
+            return ResponseEntity.ok().build();
+        }
+        catch (Exception e) {
+            return  ResponseEntity.notFound().build();
+        }
+    }
     
 
     // MODIFICATION

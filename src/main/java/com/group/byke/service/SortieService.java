@@ -87,6 +87,15 @@ public class SortieService implements ISortieService {
         return "";
     }
 
+    // CREATION
+    public void createSortie(EntitySortie unS) {
+        try {
+            unSortieRepository.save(unS);
+        } catch (Exception e) {
+            ResponseEntity.notFound().build();
+        }
+    }
+
     // MODIFICATION
     @Override
     public void updateSortie (EntitySortie unS) {
