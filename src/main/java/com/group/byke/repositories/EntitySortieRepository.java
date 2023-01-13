@@ -31,7 +31,7 @@ public interface EntitySortieRepository extends JpaRepository<EntitySortie, Inte
                             @Param("lieu_depart") String lieu_depart,
                             @Param("distance_parcourue") float distance_parcourue);
 
-        @Query("SELECT s FROM EntitySortie s WHERE s.num_sortie = :num_sortie")
-        List<EntitySortie> getSortie(@Param("num_sortie") int num_sortie);
+        @Query("SELECT s FROM EntitySortie s WHERE s.num_util = :num_util")
+        List<EntitySortie> getSorties(@Param("num_util") int num_util);
 
 }
