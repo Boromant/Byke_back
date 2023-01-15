@@ -1,12 +1,16 @@
 package com.group.byke.service;
 
 import com.group.byke.domains.EntitySucces;
+import com.group.byke.dto.SuccesResponse;
 import com.group.byke.repositories.EntitySuccesRepository;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -21,9 +25,18 @@ public class SuccesService implements ISuccesService {
 
     // AFFICHAGE
     @Override
-    public List<EntitySucces> listerSuccess(@RequestParam("id") int numUtil) {
+    public List<SuccesResponse> listerSuccess(@RequestParam("id") int numUtil) {
         try {
-            return unSuccesRepository.listerSuccessUser(numUtil);
+            List<SuccesResponse> mesSuccess = unSuccesRepository.listerSuccessUser(numUtil);
+            for(SuccesResponse s : mesSuccess){
+                Date date = s.getDateObtention();
+                Calendar c = Calendar.getInstance();
+                c.setTime(date);
+                c.add(Calendar.DATE, 1);
+                date = c.getTime();
+                s.setDateObtention(date);
+            }
+            return mesSuccess;
         } catch (Exception e) {
             ResponseEntity.notFound().build();
         }

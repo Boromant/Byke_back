@@ -1,6 +1,7 @@
 package com.group.byke.controller;
 
 import com.group.byke.domains.EntitySucces;
+import com.group.byke.dto.SuccesResponse;
 import com.group.byke.service.SuccesService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -31,8 +32,8 @@ public class SuccesController {
     }
 
     @GetMapping("/getSuccess")
-    public List<EntitySucces> getSuccess(@RequestParam("id") int numUtil) {
-        List<EntitySucces> mesSuccess = null;
+    public List<SuccesResponse> getSuccess(@RequestParam("id") int numUtil) {
+        List<SuccesResponse> mesSuccess = null;
         try {
             mesSuccess = unSuccesService.listerSuccess(numUtil);
 

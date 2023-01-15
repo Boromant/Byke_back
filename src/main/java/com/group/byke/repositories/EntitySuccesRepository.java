@@ -1,6 +1,7 @@
 package com.group.byke.repositories;
 
 import com.group.byke.domains.EntitySucces;
+import com.group.byke.dto.SuccesResponse;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -19,9 +20,9 @@ public interface EntitySuccesRepository extends JpaRepository<EntitySucces, Inte
     int updateSucces(@Param("numSucces") int id,
                      @Param("nomSucces") String nomSucces);
 
-    @Query("Select s.nomSucces, l.dateObtention from EntitySucces s"
+    @Query("Select new com.group.byke.dto.SuccesResponse(s.nomSucces, l.dateObtention) from EntitySucces s"
             + " join s.entitySuccesUsers l"
             + " join l.users u"
             + " where u.numUtil = :numUtil")
-    List<EntitySucces> listerSuccessUser(@Param("numUtil") int numUtil);
+    List<SuccesResponse> listerSuccessUser(@Param("numUtil") int numUtil);
 }
