@@ -1,7 +1,10 @@
 package com.group.byke.domains;
 
 import javax.persistence.*;
+
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 
 @Entity
 @Table(name = "users", schema = "byke")
@@ -51,6 +54,16 @@ public class EntityUsers {
 
     public void setRole(String role) {
         this.role = role;
+    }
+
+    private Set<EntitySuccesUsers> entitySuccesUsers = new HashSet<>();
+
+    @OneToMany(mappedBy = "users")
+    public Set<EntitySuccesUsers> getEntitySuccesUsers() {
+        return entitySuccesUsers;
+    }
+    public void setEntitySuccesUsers(Set<EntitySuccesUsers> entitySuccesUsers) {
+        this.entitySuccesUsers = entitySuccesUsers;
     }
 
     @Override

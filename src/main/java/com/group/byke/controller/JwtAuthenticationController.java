@@ -18,7 +18,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
-import com.group.byke.service.JwtUserDetailsService;
 import com.group.byke.config.JwtTokenUtil;
 
 @RequestMapping("/authentification")
@@ -30,8 +29,6 @@ public class JwtAuthenticationController {
     private AuthenticationManager authenticationManager;
     @Autowired
     private JwtTokenUtil jwtTokenUtil;
-    @Autowired
-    private JwtUserDetailsService userDetailsService;
 
     private EntityUsersRepository unUtilisateurRepository;
 

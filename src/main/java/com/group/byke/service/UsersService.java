@@ -8,11 +8,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import java.text.SimpleDateFormat;
 import java.util.List;
-import java.util.Locale;
 import java.util.Optional;
-import java.util.concurrent.TimeUnit;
 
 @Service
 public class UsersService implements IUsersService {
